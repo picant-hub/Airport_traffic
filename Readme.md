@@ -271,6 +271,17 @@ sns.set_theme(style="whitegrid")
 plt.rcParams['figure.figsize'] = (12, 6)
 ```
 
+
+```python
+print(df.columns)  # Check if 'TOTAL_FLIGHTS' is listed
+```
+
+    Index(['YEAR', 'MONTH_NUM', 'MONTH_MON', 'FLT_DATE', 'APT_ICAO', 'APT_NAME',
+           'STATE_NAME', 'FLT_DEP_1', 'FLT_ARR_1', 'FLT_TOT_1', 'FLT_DEP_IFR_2',
+           'FLT_ARR_IFR_2', 'FLT_TOT_IFR_2'],
+          dtype='object')
+    
+
 # Q1.Which European airport had the highest total flight volume (departures + arrivals) during the first week of January 2024, and what were the contributing factors?
 
 
@@ -297,7 +308,7 @@ plt.show()
 
 
     
-![png](output_9_0.png)
+![png](output_10_0.png)
     
 
 
@@ -328,7 +339,7 @@ plt.show()
 
 
     
-![png](output_12_0.png)
+![png](output_13_0.png)
     
 
 
@@ -343,23 +354,23 @@ plt.show()
 
 
 ```python
-# Filter data
-airports = df[df['APT_ICAO'].isin(['LFPG', 'EDDF'])]
-ifr_data = airports.groupby('APT_ICAO')[['FLT_TOT_IFR_2', 'TOTAL_FLIGHTS']].sum().reset_index()
+# Step 1: Create the 'TOTAL_FLIGHTS' column
+df['TOTAL_FLIGHTS'] = df['FLT_DEP_1'] + df['FLT_ARR_1']
 
-# Plot
-plt.bar(ifr_data['APT_ICAO'], ifr_data['TOTAL_FLIGHTS'], label='Total Flights')
-plt.bar(ifr_data['APT_ICAO'], ifr_data['FLT_TOT_IFR_2'], label='IFR Flights')
-plt.ylabel('Flights')
-plt.title('IFR vs. Total Flights: LFPG vs. EDDF')
-plt.legend()
-plt.savefig('Q2_IFR_Adoption.png', dpi=300)
+# Step 2: Now calculate variance
+variance = df.groupby('STATE_NAME')['TOTAL_FLIGHTS'].var().sort_values(ascending=False).head(5)
+
+# Step 3: Plot
+plt.bar(variance.index, variance.values, color='orange')
+plt.ylabel('Variance')
+plt.title('Countries with Highest Daily Flight Variance')
+plt.xticks(rotation=45)
 plt.show()
 ```
 
 
     
-![png](output_15_0.png)
+![png](output_16_0.png)
     
 
 
@@ -390,7 +401,7 @@ plt.show()
 
 
     
-![png](output_18_0.png)
+![png](output_19_0.png)
     
 
 
@@ -426,7 +437,7 @@ plt.show()
 
 
     
-![png](output_21_0.png)
+![png](output_22_0.png)
     
 
 
@@ -455,7 +466,7 @@ plt.show()
 
 
     
-![png](output_24_0.png)
+![png](output_25_0.png)
     
 
 
@@ -509,7 +520,7 @@ plt.show()
 
 
     
-![png](output_30_0.png)
+![png](output_31_0.png)
     
 
 
@@ -540,7 +551,7 @@ plt.show()
 
 
     
-![png](output_33_0.png)
+![png](output_34_0.png)
     
 
 
@@ -569,7 +580,7 @@ plt.show()
 
 
     
-![png](output_36_0.png)
+![png](output_37_0.png)
     
 
 
@@ -602,7 +613,7 @@ plt.show()
 
 
     
-![png](output_39_0.png)
+![png](output_40_0.png)
     
 
 
@@ -628,7 +639,7 @@ plt.show()
 
 
     
-![png](output_42_0.png)
+![png](output_43_0.png)
     
 
 
@@ -655,7 +666,7 @@ plt.show()
 
 
     
-![png](output_45_0.png)
+![png](output_46_0.png)
     
 
 
@@ -684,7 +695,7 @@ plt.show()
 
 
     
-![png](output_48_0.png)
+![png](output_49_0.png)
     
 
 
@@ -715,7 +726,7 @@ plt.show()
 
 
     
-![png](output_51_0.png)
+![png](output_52_0.png)
     
 
 
